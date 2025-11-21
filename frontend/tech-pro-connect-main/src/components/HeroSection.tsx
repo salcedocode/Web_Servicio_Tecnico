@@ -1,112 +1,171 @@
 import { useState } from 'react'
-import { Star, Shield, Clock, Phone, MessageCircle } from 'lucide-react'
+import { Shield, Clock, Phone, Star } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
 import { ServiceRequestModal } from './ServiceRequestModal'
-import heroImage from '@/assets/hero-technician.jpg'
 
+/**
+ * HeroSection - Sección principal optimizada para conversión
+ * 
+ * Mejoras implementadas:
+ * - Estructura semántica correcta con landmarks ARIA
+ * - Cintillo oscuro solo en la mitad inferior (mitad superior sin overlay)
+ * - Imagen visible completamente en la mitad superior
+ * - Contenido posicionado en la mitad inferior sobre cintillo oscuro
+ * - Headline corto y potente (máximo 8 palabras)
+ * - Subheadline conciso con beneficios clave
+ * - Máximo 2 CTAs (eliminado WhatsApp del hero)
+ * - Trust indicators debajo de CTAs
+ * - Imagen optimizada con picture element
+ * - Tipografía responsive
+ * - Animaciones sutiles con fade-in secuencial
+ * - Accesibilidad mejorada (contraste, aria-labels, focus states)
+ */
 export function HeroSection() {
   const [isModalOpen, setIsModalOpen] = useState(false)
 
+  // Número de teléfono (ajustar según necesidad)
+  const phoneNumber = '+573003094854'
+
+  const handleCall = () => {
+    window.location.href = `tel:${phoneNumber}`
+  }
+
   return (
-    <section className="relative overflow-hidden bg-gradient-to-br from-background via-background to-primary/5">
-      <div className="container-wide py-16 lg:py-24">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-          {/* Content */}
-          <div className="space-y-8 animate-fade-in-up">
-            <div className="space-y-4">
-              <h1 className="text-4xl lg:text-6xl font-bold leading-tight">
-                <span className="text-foreground">Reparamos tus</span>
-                <br />
-                <span className="text-gradient">Electrodomésticos</span>
-                <br />
-                <span className="text-foreground">en Casa</span>
-              </h1>
-              <p className="text-xl text-muted-foreground max-w-lg">
-                Técnicos certificados, garantía de 6 meses y servicio 24/7. La
-                solución más confiable para el cuidado de tus electrodomésticos.
-              </p>
-            </div>
+    <section 
+      className="relative overflow-hidden min-h-[85vh] sm:min-h-[90vh] lg:min-h-screen"
+      aria-label="Sección principal"
+    >
+      {/* Capa de fondo con imagen */}
+      <div className="absolute inset-0">
+        <picture>
+          {/* Imagen para mobile - menos productos, punto focal centrado */}
+          <source
+            media="(max-width: 640px)"
+            srcSet="/portadas/portada-vertical-2.png"
+          />
+          {/* Imagen para desktop */}
+          <source
+            media="(min-width: 641px)"
+            srcSet="/portadas/portada7.png"
+          />
+          {/* Fallback */}
+          <img
+            src="/portadas/portada7.png"
+            alt="Técnicos profesionales de TechRepair Pro reparando electrodomésticos a domicilio"
+            className="w-full h-full object-cover"
+            loading="eager"
+            fetchPriority="high"
+          />
+        </picture>
+      </div>
 
-            {/* Trust Badges */}
-            <div className="flex flex-wrap gap-6">
-              <div className="flex items-center gap-2">
-                <Shield className="h-5 w-5 text-success" />
-                <span className="text-sm font-medium">Garantía 6 meses</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Star className="h-5 w-5 text-success" />
-                <span className="text-sm font-medium">+5000 clientes</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Clock className="h-5 w-5 text-success" />
-                <span className="text-sm font-medium">Servicio 24/7</span>
-              </div>
-            </div>
+      {/* Cintillo oscuro desde la mitad hacia abajo - La mitad superior sin overlay */}
+      <div 
+        className="absolute inset-0"
+        style={{
+          background: 'linear-gradient(to bottom, transparent 0%, transparent 50%, rgba(0, 0, 0, 0.2) 50%, rgba(0, 0, 0, 0.75) 100%)'
+        }}
+        aria-hidden="true"
+      />
 
-            {/* Quick Form */}
-            <div className="bg-card border border-border rounded-2xl p-6 shadow-medium">
-              <h3 className="text-lg font-semibold mb-4">
-                Solicita tu servicio ahora
-              </h3>
-              <div className="grid sm:grid-cols-2 gap-4">
-                <Select>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Tipo de electrodoméstico" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="neveras">neveras</SelectItem>
-                    <SelectItem value="lavadora">Lavadora</SelectItem>
-                    <SelectItem value="aire">Aire Acondicionado</SelectItem>
-                    <SelectItem value="microondas">Microondas</SelectItem>
-                    <SelectItem value="estufa">Estufa</SelectItem>
-                    <SelectItem value="secadora">Secadora</SelectItem>
-                  </SelectContent>
-                </Select>
-                <Input placeholder="Código postal" />
-              </div>
-              <Button
-                className="btn-hero w-full mt-4"
-                onClick={() => setIsModalOpen(true)}
-              >
-                Solicitar Servicio Técnico
-              </Button>
-            </div>
+      {/* Contenedor de contenido posicionado en la mitad inferior */}
+      <div className="relative container-wide min-h-[85vh] sm:min-h-[90vh] lg:min-h-screen flex items-end py-12 sm:py-16 lg:py-5 px-5 sm:px-6 lg:px-0.5">
+        <div className="w-full max-w-[700px] space-y-6 sm:space-y-2">
 
-            {/* Contact Actions */}
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Button variant="outline" className="flex items-center gap-2">
-                <Phone className="h-4 w-4" />
-                Llamar Ahora
-              </Button>
-              <Button variant="outline" className="flex items-center gap-2">
-                <MessageCircle className="h-4 w-4" />
-                WhatsApp
-              </Button>
-            </div>
+          {/* Badge superior opcional - Disponible Hoy */}
+          <div 
+            className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md px-4 py-2 rounded-full border border-white/20 animate-fade-in-up"
+            style={{ animationDelay: '0ms' }}
+          >
+            <Clock className="h-4 w-4 text-white" aria-hidden="true" />
+            <span className="text-sm font-medium text-white">
+              Disponible Hoy
+            </span>
           </div>
 
-          {/* Image */}
-          <div className="relative animate-float">
-            <div className="relative">
-              <img
-                src={heroImage}
-                alt="Técnico profesional de TechRepair Pro"
-                className="rounded-2xl shadow-strong w-full h-auto"
-              />
-              <div className="absolute inset-0 bg-gradient-to-tr from-primary/10 to-transparent rounded-2xl"></div>
+          {/* Headline principal - Máximo 8 palabras, más impactante */}
+          <h1 
+            className="text-3xl sm:text-4xl lg:text-[52px] font-bold leading-tight tracking-[-0.02em] text-white animate-fade-in-up"
+            style={{ animationDelay: '100ms', lineHeight: '1.15', textShadow: '2px 2px 8px rgba(0,0,0,0.8)' }}
+          >
+            Reparamos tus Electrodomésticos en Casa
+          </h1>
+
+          {/* Subheadline descriptivo - 15-20 palabras */}
+          <p 
+            className="text-base sm:text-lg lg:text-xl text-white/90 leading-relaxed max-w-2xl animate-fade-in-up mt-6 sm:mt-8"
+            style={{ animationDelay: '200ms' }}
+          >
+            Técnicos certificados • 3 meses de garantía • Servicio Lun-Sab
+          </p>
+
+          {/* Contenedor de CTAs */}
+          <div 
+            className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-2 animate-fade-in-up"
+            style={{ animationDelay: '300ms' }}
+          >
+            {/* CTA Primario - Solicitar Servicio (Azul) */}
+            <Button
+              onClick={() => setIsModalOpen(true)}
+              className="w-full sm:w-auto min-w-[280px] min-h-[56px] px-8 py-4 text-base sm:text-lg font-semibold bg-blue-600 hover:bg-blue-700 text-white border-blue-600 hover:border-blue-700 shadow-lg hover:shadow-xl hover:scale-[1.02] focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2 focus-visible:ring-offset-black/50 transition-all duration-300"
+              aria-label="Abrir formulario para solicitar servicio técnico"
+            >
+              Solicitar Servicio
+            </Button>
+
+            {/* CTA Secundario - Llamar Ahora (Verde) */}
+            <Button
+              onClick={handleCall}
+              className="w-full sm:w-auto min-w-[280px] min-h-[56px] px-8 py-4 text-base sm:text-lg font-semibold bg-green-600 hover:bg-green-700 text-white border-green-600 hover:border-green-700 shadow-lg hover:shadow-xl hover:scale-[1.02] focus-visible:ring-2 focus-visible:ring-green-400 focus-visible:ring-offset-2 focus-visible:ring-offset-black/50 transition-all duration-300"
+              aria-label={`Llamar al número ${phoneNumber}`}
+            >
+              <Phone className="h-5 w-5 mr-2" aria-hidden="true" />
+              Llamar Ahora
+            </Button>
+          </div>
+
+          {/* Trust Indicators / Badges - Debajo de CTAs */}
+          <div 
+            className="flex flex-wrap gap-3 sm:gap-4 pt-4 animate-fade-in-up"
+            style={{ animationDelay: '400ms' }}
+          >
+            {/* Badge 1: Garantía */}
+            <div 
+              className="flex items-center gap-2 bg-white/10 backdrop-blur-md px-4 py-2.5 rounded-lg border border-white/20"
+              aria-label="Garantía de 3 meses en todos los servicios"
+            >
+              <Shield className="h-4 w-4 sm:h-5 sm:w-5 text-white flex-shrink-0" aria-hidden="true" />
+              <span className="text-sm font-medium text-white">
+                Garantía 3 meses
+              </span>
+            </div>
+
+            {/* Badge 2: Horario */}
+            <div 
+              className="flex items-center gap-2 bg-white/10 backdrop-blur-md px-4 py-2.5 rounded-lg border border-white/20"
+              aria-label="Servicio disponible de lunes a sábado"
+            >
+              <Clock className="h-4 w-4 sm:h-5 sm:w-5 text-white flex-shrink-0" aria-hidden="true" />
+              <span className="text-sm font-medium text-white">
+                Servicio Lun-Sab
+              </span>
+            </div>
+
+            {/* Badge 3: Experiencia (opcional, puede eliminarse si se prefiere solo 2) */}
+            <div 
+              className="flex items-center gap-2 bg-white/10 backdrop-blur-md px-4 py-2.5 rounded-lg border border-white/20"
+              aria-label="Técnicos con experiencia certificada"
+            >
+              <Star className="h-4 w-4 sm:h-5 sm:w-5 text-white flex-shrink-0" aria-hidden="true" />
+              <span className="text-sm font-medium text-white">
+                Técnicos Certificados
+              </span>
             </div>
           </div>
         </div>
       </div>
 
+      {/* Modal de solicitud de servicio */}
       <ServiceRequestModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}

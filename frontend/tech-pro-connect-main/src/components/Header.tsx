@@ -2,9 +2,11 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Menu, X, Phone, MessageCircle, Wrench } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { ServiceRequestModal } from "./ServiceRequestModal";
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
     <header className="bg-background/95 backdrop-blur-sm border-b border-border sticky top-0 z-50">
@@ -12,9 +14,11 @@ export function Header() {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-3 group">
-            <div className="bg-gradient-to-br from-primary to-primary-hover p-2 rounded-lg">
-              <Wrench className="h-6 w-6 text-primary-foreground" />
-            </div>
+            <img 
+              src="/logotipos/logotipo2.1.png" 
+              alt="logotipo TechRepair Pro" 
+              className="h-16 w-auto object-contain"
+            />
             <span className="font-bold text-xl text-gradient">TechRepair Pro</span>
           </Link>
 
@@ -30,13 +34,13 @@ export function Header() {
               to="/servicios" 
               className="text-foreground/80 hover:text-primary transition-colors font-medium"
             >
-              Servicios
+              Procesos
             </Link>
             <Link 
               to="/como-funciona" 
               className="text-foreground/80 hover:text-primary transition-colors font-medium"
             >
-              Cómo Funciona
+              Servicios
             </Link>
             <Link 
               to="/contacto" 
@@ -51,7 +55,7 @@ export function Header() {
             <Button variant="ghost" asChild>
               <Link to="/login">Iniciar Sesión</Link>
             </Button>
-            <Button className="btn-hero">
+            <Button className="btn-hero" onClick={() => setIsModalOpen(true)}>
               Solicitar Servicio
             </Button>
           </div>
@@ -86,14 +90,14 @@ export function Header() {
                 className="block py-2 text-foreground/80 hover:text-primary transition-colors"
                 onClick={() => setIsMenuOpen(false)}
               >
-                Servicios
+                Procesos
               </Link>
               <Link 
                 to="/como-funciona" 
                 className="block py-2 text-foreground/80 hover:text-primary transition-colors"
                 onClick={() => setIsMenuOpen(false)}
               >
-                Cómo Funciona
+                Servicios
               </Link>
               <Link 
                 to="/contacto" 
@@ -109,13 +113,24 @@ export function Header() {
                   Iniciar Sesión
                 </Link>
               </Button>
-              <Button className="btn-hero w-full">
+              <Button 
+                className="btn-hero w-full"
+                onClick={() => {
+                  setIsModalOpen(true)
+                  setIsMenuOpen(false)
+                }}
+              >
                 Solicitar Servicio
               </Button>
             </div>
           </div>
         )}
       </nav>
+
+      <ServiceRequestModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
     </header>
   );
 }

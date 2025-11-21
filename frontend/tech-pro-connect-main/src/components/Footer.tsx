@@ -113,26 +113,34 @@ export function Footer() {
             <ul className="space-y-2">
               <li>
                 <Link
-                  to="/servicios/nevecones"
+                  to="/servicios/neveras-nevecones"
                   className="text-muted-foreground hover:text-primary transition-colors"
                 >
-                  nevecones
+                  Neveras-Nevecones
                 </Link>
               </li>
               <li>
                 <Link
-                  to="/servicios/lavadoras"
+                  to="/servicios/lavadoras-secadoras"
                   className="text-muted-foreground hover:text-primary transition-colors"
                 >
-                  Lavadoras
+                  Lavadoras-Secadoras
                 </Link>
               </li>
               <li>
                 <Link
-                  to="/servicios/aires-acondicionados"
+                  to="/servicios/calentadores"
                   className="text-muted-foreground hover:text-primary transition-colors"
                 >
-                  Aires Acondicionados
+                  Calentadores
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/servicios/estufas-hornos"
+                  className="text-muted-foreground hover:text-primary transition-colors"
+                >
+                  Estufas-Hornos
                 </Link>
               </li>
               <li>
@@ -145,18 +153,10 @@ export function Footer() {
               </li>
               <li>
                 <Link
-                  to="/servicios/estufas"
+                  to="/servicios/televisores-lcd"
                   className="text-muted-foreground hover:text-primary transition-colors"
                 >
-                  Estufas
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/servicios/secadoras"
-                  className="text-muted-foreground hover:text-primary transition-colors"
-                >
-                  Secadoras
+                  Televisores LCD
                 </Link>
               </li>
             </ul>
