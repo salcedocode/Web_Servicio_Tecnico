@@ -8,6 +8,7 @@ import ClientDashboard from "./pages/ClientDashboard";
 import TechnicianDashboard from "./pages/TechnicianDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
 import Login from "./pages/Login";
+import BlogPage from "./pages/BlogPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -21,6 +22,7 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/blog" element={<BlogPage />} />
           <Route path="/dashboard/cliente" element={<ClientDashboard />} />
           <Route path="/dashboard/tecnico" element={<TechnicianDashboard />} />
           <Route path="/dashboard/admin" element={<AdminDashboard />} />

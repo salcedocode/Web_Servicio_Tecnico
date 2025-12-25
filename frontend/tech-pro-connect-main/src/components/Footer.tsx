@@ -1,4 +1,5 @@
-import { Link } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { useState } from 'react'
 import {
   Wrench,
   Phone,
@@ -9,8 +10,71 @@ import {
   Twitter,
   Clock,
 } from 'lucide-react'
+import { PricingModal } from './PricingModal'
+import { ServiceInfoModal } from './ServiceInfoModal'
+import { ServiceRequestModal } from './ServiceRequestModal'
 
 export function Footer() {
+  const location = useLocation()
+  const navigate = useNavigate()
+  const [isPricingModalOpen, setIsPricingModalOpen] = useState(false)
+  const [isServiceInfoModalOpen, setIsServiceInfoModalOpen] = useState(false)
+  const [selectedService, setSelectedService] = useState<string | null>(null)
+  const [isServiceRequestModalOpen, setIsServiceRequestModalOpen] = useState(false)
+
+  // Función para scroll suave a secciones
+  const scrollToSection = (sectionId: string) => {
+    const scrollFunction = (retryCount = 0) => {
+      const element = document.getElementById(sectionId)
+      if (!element) {
+        if (retryCount < 10) {
+          setTimeout(() => scrollFunction(retryCount + 1), 100)
+          return
+        }
+        return
+      }
+
+      const headerOffset = 80
+      const elementPosition = element.offsetTop
+      const offsetPosition = elementPosition - headerOffset
+
+      window.scrollTo({
+        top: Math.max(0, offsetPosition),
+        behavior: 'smooth',
+      })
+    }
+
+    requestAnimationFrame(() => scrollFunction(0))
+  }
+
+  // Manejar clicks en enlaces de navegación
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, sectionId: string) => {
+    e.preventDefault()
+    if (location.pathname === '/') {
+      scrollToSection(sectionId)
+      window.history.pushState(null, '', `#${sectionId}`)
+    } else {
+      navigate(`/#${sectionId}`)
+    }
+  }
+
+  // Manejar click en precios
+  const handlePricingClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault()
+    setIsPricingModalOpen(true)
+  }
+
+  // Manejar click en servicio - abrir modal de información
+  const handleServiceClick = (serviceValue: string) => {
+    setSelectedService(serviceValue)
+    setIsServiceInfoModalOpen(true)
+  }
+
+  // Manejar solicitud de servicio desde el modal de información
+  const handleServiceRequest = (serviceValue: string) => {
+    setSelectedService(serviceValue)
+    setIsServiceRequestModalOpen(true)
+  }
   return (
     <footer className="bg-card border-t border-border">
       <div className="container-wide py-12 lg:py-16">
@@ -57,44 +121,49 @@ export function Footer() {
             <h4 className="font-semibold text-lg mb-4">Enlaces Rápidos</h4>
             <ul className="space-y-2">
               <li>
-                <Link
-                  to="/"
-                  className="text-muted-foreground hover:text-primary transition-colors"
+                <a
+                  href="#inicio"
+                  onClick={(e) => handleNavClick(e, 'inicio')}
+                  className="text-muted-foreground hover:text-primary transition-colors cursor-pointer"
                 >
                   Inicio
-                </Link>
+                </a>
               </li>
               <li>
-                <Link
-                  to="/servicios"
-                  className="text-muted-foreground hover:text-primary transition-colors"
+                <a
+                  href="#servicios"
+                  onClick={(e) => handleNavClick(e, 'servicios')}
+                  className="text-muted-foreground hover:text-primary transition-colors cursor-pointer"
                 >
                   Servicios
-                </Link>
+                </a>
               </li>
               <li>
-                <Link
-                  to="/como-funciona"
-                  className="text-muted-foreground hover:text-primary transition-colors"
+                <a
+                  href="#como-funciona"
+                  onClick={(e) => handleNavClick(e, 'como-funciona')}
+                  className="text-muted-foreground hover:text-primary transition-colors cursor-pointer"
                 >
                   Cómo Funciona
-                </Link>
+                </a>
               </li>
               <li>
-                <Link
-                  to="/precios"
-                  className="text-muted-foreground hover:text-primary transition-colors"
+                <a
+                  href="#precios"
+                  onClick={handlePricingClick}
+                  className="text-muted-foreground hover:text-primary transition-colors cursor-pointer"
                 >
                   Precios
-                </Link>
+                </a>
               </li>
               <li>
-                <Link
-                  to="/contacto"
-                  className="text-muted-foreground hover:text-primary transition-colors"
+                <a
+                  href="#contacto"
+                  onClick={(e) => handleNavClick(e, 'contacto')}
+                  className="text-muted-foreground hover:text-primary transition-colors cursor-pointer"
                 >
                   Contacto
-                </Link>
+                </a>
               </li>
               <li>
                 <Link
@@ -112,52 +181,52 @@ export function Footer() {
             <h4 className="font-semibold text-lg mb-4">Nuestros Servicios</h4>
             <ul className="space-y-2">
               <li>
-                <Link
-                  to="/servicios/neveras-nevecones"
-                  className="text-muted-foreground hover:text-primary transition-colors"
+                <button
+                  onClick={() => handleServiceClick('neveras')}
+                  className="text-left text-muted-foreground hover:text-primary transition-colors cursor-pointer w-full"
                 >
                   Neveras-Nevecones
-                </Link>
+                </button>
               </li>
               <li>
-                <Link
-                  to="/servicios/lavadoras-secadoras"
-                  className="text-muted-foreground hover:text-primary transition-colors"
+                <button
+                  onClick={() => handleServiceClick('lavadora')}
+                  className="text-left text-muted-foreground hover:text-primary transition-colors cursor-pointer w-full"
                 >
                   Lavadoras-Secadoras
-                </Link>
+                </button>
               </li>
               <li>
-                <Link
-                  to="/servicios/calentadores"
-                  className="text-muted-foreground hover:text-primary transition-colors"
+                <button
+                  onClick={() => handleServiceClick('calentadores')}
+                  className="text-left text-muted-foreground hover:text-primary transition-colors cursor-pointer w-full"
                 >
                   Calentadores
-                </Link>
+                </button>
               </li>
               <li>
-                <Link
-                  to="/servicios/estufas-hornos"
-                  className="text-muted-foreground hover:text-primary transition-colors"
+                <button
+                  onClick={() => handleServiceClick('estufa')}
+                  className="text-left text-muted-foreground hover:text-primary transition-colors cursor-pointer w-full"
                 >
                   Estufas-Hornos
-                </Link>
+                </button>
               </li>
               <li>
-                <Link
-                  to="/servicios/microondas"
-                  className="text-muted-foreground hover:text-primary transition-colors"
+                <button
+                  onClick={() => handleServiceClick('microondas')}
+                  className="text-left text-muted-foreground hover:text-primary transition-colors cursor-pointer w-full"
                 >
                   Microondas
-                </Link>
+                </button>
               </li>
               <li>
-                <Link
-                  to="/servicios/televisores-lcd"
-                  className="text-muted-foreground hover:text-primary transition-colors"
+                <button
+                  onClick={() => handleServiceClick('televisores')}
+                  className="text-left text-muted-foreground hover:text-primary transition-colors cursor-pointer w-full"
                 >
                   Televisores LCD
-                </Link>
+                </button>
               </li>
             </ul>
           </div>
@@ -171,9 +240,9 @@ export function Footer() {
                 <div>
                   <div className="font-medium">Llamadas</div>
                   <div className="text-muted-foreground text-sm">
-                    +52 55 1234 5678
+                    +57 300 309 4854
                     <br />
-                    +52 55 8765 4321
+                    +57 315 678 9012
                   </div>
                 </div>
               </div>
@@ -183,9 +252,9 @@ export function Footer() {
                 <div>
                   <div className="font-medium">Email</div>
                   <div className="text-muted-foreground text-sm">
-                    info@techrepairpro.mx
+                    info@techrepairpro.co
                     <br />
-                    soporte@techrepairpro.mx
+                    soporte@techrepairpro.co
                   </div>
                 </div>
               </div>
@@ -195,9 +264,9 @@ export function Footer() {
                 <div>
                   <div className="font-medium">Horarios</div>
                   <div className="text-muted-foreground text-sm">
-                    Lun - Dom: 24 horas
+                    Lun - Sáb: 8:00 AM - 6:00 PM
                     <br />
-                    Emergencias: Siempre
+                    Dom: Solo emergencias
                   </div>
                 </div>
               </div>
@@ -205,11 +274,11 @@ export function Footer() {
               <div className="flex items-start gap-3">
                 <MapPin className="h-5 w-5 text-primary mt-1 flex-shrink-0" />
                 <div>
-                  <div className="font-medium">Cobertura</div>
+                  <div className="font-medium">Ubicación</div>
                   <div className="text-muted-foreground text-sm">
-                    Ciudad de México, Guadalajara,
+                    Cali, Valle del Cauca
                     <br />
-                    Monterrey y área metropolitana
+                    Colombia
                   </div>
                 </div>
               </div>
@@ -246,6 +315,27 @@ export function Footer() {
           </div>
         </div>
       </div>
+
+      {/* Modal de Precios */}
+      <PricingModal
+        isOpen={isPricingModalOpen}
+        onClose={() => setIsPricingModalOpen(false)}
+      />
+
+      {/* Modal de Información de Servicio */}
+      <ServiceInfoModal
+        isOpen={isServiceInfoModalOpen}
+        onClose={() => setIsServiceInfoModalOpen(false)}
+        serviceValue={selectedService}
+        onRequestService={handleServiceRequest}
+      />
+
+      {/* Modal de Solicitud de Servicio */}
+      <ServiceRequestModal
+        isOpen={isServiceRequestModalOpen}
+        onClose={() => setIsServiceRequestModalOpen(false)}
+        initialAppliance={selectedService || ''}
+      />
     </footer>
   )
 }

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Phone, UserCheck, Wrench, CheckCircle, ArrowRight } from "lucide-react";
 import { ServiceRequestModal } from "./ServiceRequestModal";
+import { PricingModal } from "./PricingModal";
 
 const steps = [
   {
@@ -28,6 +29,8 @@ const steps = [
 
 export function HowItWorksSection() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isPricingModalOpen, setIsPricingModalOpen] = useState(false);
+
 
   return (
     <section className="py-16 lg:py-24 bg-background">
@@ -117,9 +120,15 @@ export function HowItWorksSection() {
               >
                 Solicitar Servicio Ahora
               </button>
-              <button className="btn-secondary">
+
+              <button 
+              className="btn-secondary"
+              type="button"
+              onClick= {() => setIsPricingModalOpen(true)}
+              >
                 Ver Precios
               </button>
+
             </div>
           </div>
         </div>
@@ -128,6 +137,10 @@ export function HowItWorksSection() {
       <ServiceRequestModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
+      />
+      <PricingModal
+        isOpen={isPricingModalOpen}
+        onClose={() => setIsPricingModalOpen(false)}
       />
     </section>
   );

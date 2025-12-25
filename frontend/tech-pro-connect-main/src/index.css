@@ -131,6 +131,12 @@
   body {
     @apply bg-background text-foreground font-inter;
   }
+
+  /* Scroll suave y padding para enlaces con hash */
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 80px; /* Altura del header sticky */
+  }
 }
 
 /* TechRepair Pro Component Classes */
